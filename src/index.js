@@ -1,14 +1,5 @@
-import express from 'express';
-import cors from 'cors';
-import empleadosRoutes from "./routes/empleados.routes.js";
-const app = express();
-app.use(cors());
+import app from "./functions/app.js"
+import {PORT} from "./config.js"
 
-const PORT = 3003;
-
-app.use(express.json()); // Middleware para leer JSON en el body
-
-// Usar las rutas de empleados
-app.use('/empleados', empleadosRoutes);
-
-app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
+app.listen( PORT);
+console.log("server esta corriendo en puerto ",PORT)
