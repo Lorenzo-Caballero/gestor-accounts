@@ -14,14 +14,15 @@ export const agregarCuenta = (req, res) => {
   
     res.json({ message: "Cuenta añadida correctamente", empleado: empleados[empleado - 1] });
   };
-  export const obtenerEmpleados = (req, res) => {
-    if (!empleados || empleados.length === 0) {
-      return res.status(404).json({ error: "No hay empleados registrados" });
+  export const obtenerEmpleados = async (req, res) => {
+    try {
+      const [rows] = await pool.query("SELECT * FROM empleados");
+      res.json(rows);
+    } catch (error) {
+      console.error("Error obteniendo empleados:", error);
+      res.status(500).json({ error: "Error en el servidor" });
     }
-  
-    res.json(empleados);
   };
-  
   export const obtenerCBU = (req, res) => {
     const empleadoIndex = parseInt(req.query.empleado);
   
