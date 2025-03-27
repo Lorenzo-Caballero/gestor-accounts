@@ -14,6 +14,13 @@ export const agregarCuenta = (req, res) => {
   
     res.json({ message: "Cuenta añadida correctamente", empleado: empleados[empleado - 1] });
   };
+  export const obtenerEmpleados = (req, res) => {
+    if (!empleados || empleados.length === 0) {
+      return res.status(404).json({ error: "No hay empleados registrados" });
+    }
+  
+    res.json(empleados);
+  };
   
   export const obtenerCBU = (req, res) => {
     const empleadoIndex = parseInt(req.query.empleado);
