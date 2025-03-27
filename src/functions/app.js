@@ -1,5 +1,4 @@
 import express from "express";
-import designsRoutes from "../routes/designs.routes.js";
 import cors from "cors";
 import bodyParser from 'body-parser';
 import { obtenerEmpleados } from "../controllers/empleados.controllers.js";
@@ -11,7 +10,7 @@ app.use(express.json());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-app.use("/api", designsRoutes);
+
 app.use("/api", obtenerEmpleados);
 
 
