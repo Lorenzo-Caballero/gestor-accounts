@@ -1,5 +1,5 @@
 import express from 'express';
-import { agregarCuenta, obtenerCBU } from "../controllers/empleados.controllers"
+import { agregarCuenta, obtenerCBU } from "../controllers/empleados.controllers.js";
 
 const router = express.Router();
 
