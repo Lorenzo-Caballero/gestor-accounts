@@ -1,3 +1,5 @@
+import pool from "../db.js"
+
 export const agregarCuenta = (req, res) => {
     const { empleado, cuenta } = req.body;
   
