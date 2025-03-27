@@ -1,4 +1,3 @@
-// empleados.routes.js
 import express from 'express';
 import { agregarCuenta, obtenerCBU } from "../controllers/empleados.controllers"
 
