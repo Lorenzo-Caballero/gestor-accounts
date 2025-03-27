@@ -18,11 +18,17 @@ export const agregarCuenta = (req, res) => {
   };
   export const obtenerEmpleados = async (req, res) => {
     try {
+      // Consultar la base de datos para obtener los empleados
       const [rows] = await pool.query("SELECT * FROM empleados");
+  
+      // Si la consulta es exitosa, devolver los empleados
       res.json(rows);
     } catch (error) {
-      console.error("Error obteniendo empleados:", error);
-      res.status(500).json({ error: "Error en el servidor" });
+      console.error("Error al obtener empleados:", error);
+      res.status(500).json({
+        message: "Error interno del servidor al obtener empleados",
+        error: error.message // Agregado para imprimir el mensaje específico del error
+      });
     }
   };
   export const obtenerCBU = (req, res) => {
