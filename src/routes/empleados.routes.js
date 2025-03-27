@@ -3,10 +3,7 @@ import { agregarCuenta, obtenerCBU ,obtenerEmpleados} from "../controllers/emple
 
 const router = express.Router();
 
-// Ruta para agregar una cuenta a un empleado
 router.post('/agregar-cuenta', agregarCuenta);
-
-// Ruta para obtener el CBU de un empleado
 router.get('/obtener-cbu', obtenerCBU);
 router.get('/obtener-empleados', obtenerEmpleados);
 
