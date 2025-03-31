@@ -16,6 +16,7 @@ export const agregarCuenta = (req, res) => {
   
     res.json({ message: "Cuenta añadida correctamente", empleado: empleados[empleado - 1] });
   };
+  
   export const obtenerEmpleados = async (req, res) => {
     try {
       // Consultar la base de datos para obtener los empleados
