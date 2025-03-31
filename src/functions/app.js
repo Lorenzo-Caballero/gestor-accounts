@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from 'body-parser';
-import { obtenerEmpleados } from "../controllers/empleados.controllers.js";
+import { empleadosRoutes } from "../controllers/empleados.controllers.js";
 
 const app = express();
 
@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
 
-app.use("/api", obtenerEmpleados);
+app.use("/api", empleadosRoutes);
 
 
 
