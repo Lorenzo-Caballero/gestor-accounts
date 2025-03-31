@@ -5,7 +5,7 @@ import {
     obtenerCuentaPorId, 
     actualizarCuenta, 
     eliminarCuenta 
-} from "../controllers/cuentas.controllers.js";
+} from "../controllers/cuentas.controller.js"
 
 const router = Router();
 
