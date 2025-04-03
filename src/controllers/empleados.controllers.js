@@ -117,3 +117,37 @@ export const obtenerCBU = async (req, res) => {
         });
     }
 };
+
+// Nueva función para obtener empleados con sus cuentas
+export const obtenerEmpleados = async (req, res) => {
+    try {
+        // Obtener todos los empleados
+        const [empleados] = await pool.query("SELECT * FROM empleados");
+
+        if (empleados.length === 0) {
+            return res.status(404).json({ message: "No hay empleados registrados" });
+        }
+
+        // Obtener cuentas asociadas a cada empleado
+        const empleadosConCuentas = await Promise.all(
+            empleados.map(async (empleado) => {
+                const [cuentas] = await pool.query(
+                    "SELECT id, servicio, cbu, date FROM cuentas WHERE id_empleado = ?",
+                    [empleado.id_empleado]
+                );
+                return {
+                    ...empleado,
+                    cuentas
+                };
+            })
+        );
+
+        res.json({ empleados: empleadosConCuentas });
+    } catch (error) {
+        console.error("Error al obtener empleados:", error);
+        res.status(500).json({
+            message: "Error interno del servidor al obtener empleados",
+            error: error.message
+        });
+    }
+};
