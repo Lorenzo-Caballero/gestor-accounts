@@ -3,15 +3,15 @@ import { pool } from "../db.js";
 // Crear una nueva cuenta y asociarla a un empleado
 export const crearCuenta = async (req, res) => {
     try {
-        const { servicio, cbu, id_empleado } = req.body;
+        const { servicio, cbu,titular, id_empleado } = req.body;
 
-        if (!servicio || !cbu || !id_empleado) {
+        if (!servicio || !cbu || !id_empleado || !titular) {
             return res.status(400).json({ message: "Todos los campos son obligatorios" });
         }
 
         const [result] = await pool.query(
-            "INSERT INTO cuentas (servicio, cbu, id_empleado) VALUES (?, ?, ?)",
-            [servicio, cbu, id_empleado]
+            "INSERT INTO cuentas (servicio,titular, cbu, id_empleado) VALUES (?, ?, ?, ?)",
+            [servicio, cbu, id_empleado,titular]
         );
 
         res.status(201).json({ message: "Cuenta creada exitosamente", id_cuenta: result.insertId });
