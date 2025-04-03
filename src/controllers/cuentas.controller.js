@@ -1,26 +1,31 @@
 import { pool } from "../db.js";
 
-// Crear una nueva cuenta y asociarla a un empleado
 export const crearCuenta = async (req, res) => {
     try {
-        const { servicio, cbu,titular, id_empleado } = req.body;
+        const { servicio, cbu, titular, id_empleado } = req.body;
 
         if (!servicio || !cbu || !id_empleado || !titular) {
             return res.status(400).json({ message: "Todos los campos son obligatorios" });
         }
 
+        // Obtener la fecha y hora actual
+        const fechaActual = new Date().toISOString().slice(0, 19).replace("T", " ");
+
         const [result] = await pool.query(
-            "INSERT INTO cuentas (servicio,titular, cbu, id_empleado) VALUES (?, ?, ?, ?)",
-            [servicio, cbu, id_empleado,titular]
+            "INSERT INTO cuentas (servicio, titular, cbu, date, id_empleado) VALUES (?, ?, ?, ?, ?)",
+            [servicio, titular, cbu, fechaActual, id_empleado]
         );
 
-        res.status(201).json({ message: "Cuenta creada exitosamente", id_cuenta: result.insertId });
+        res.status(201).json({ 
+            message: "Cuenta creada exitosamente", 
+            id_cuenta: result.insertId,
+            date: fechaActual
+        });
     } catch (error) {
         console.error("Error al crear cuenta:", error);
         res.status(500).json({ message: "Error interno del servidor" });
     }
 };
-
 // Obtener todas las cuentas
 export const obtenerCuentas = async (req, res) => {
     try {
