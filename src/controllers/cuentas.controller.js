@@ -1,10 +1,40 @@
 import { pool } from "../db.js";
 
+
+export const createUser = async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+        if (!name || !email) {
+            return res.status(400).json({
+                message: "Todos los campos (name, email) son obligatorios"
+            });
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const [row] = await pool.query(
+            "INSERT INTO users(name, email,password) VALUES(?, ?, ?)",
+            [name, email, hashedPassword]);
+        res.json({
+            id_client: row.insertId,
+            name,
+            email,
+            hashedPassword
+        });
+    } catch (error) {
+        console.error("Error al crear usuario:", error);
+        res.status(500).json({
+            message: "Error interno del servidor al crear usuario",
+            error: error.message // Agregado para imprimir el mensaje específico del error.
+        });
+    }
+};
+
+
 export const crearCuenta = async (req, res) => {
     try {
         const { servicio, cbu, titular, id_empleado } = req.body;
 
-        if (!servicio || !cbu || !id_empleado || !titular) {
+        if (!servicio || !cbu || !titular) {
             return res.status(400).json({ message: "Todos los campos son obligatorios" });
         }
 
@@ -26,7 +56,6 @@ export const crearCuenta = async (req, res) => {
         res.status(500).json({ message: "Error interno del servidor" });
     }
 };
-// Obtener todas las cuentas
 export const obtenerCuentas = async (req, res) => {
     try {
         const [rows] = await pool.query("SELECT * FROM cuentas");
