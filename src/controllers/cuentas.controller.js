@@ -33,7 +33,7 @@ export const createUser = async (req, res) => {
 export const crearCuenta = async (req, res) => {
     try {
         const { servicio, cbu, titular, id_empleado } = req.body;
-
+console.log("info",servicio,cbu,titular);
         if (!servicio || !cbu || !titular) {
             return res.status(400).json({ message: "Todos los campos son obligatorios" });
         }
