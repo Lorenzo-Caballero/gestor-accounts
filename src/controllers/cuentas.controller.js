@@ -30,32 +30,66 @@ export const createUser = async (req, res) => {
 };
 
 
+export const obtenerCuentasConEmpleados = async (req, res) => {
+    try {
+        const [rows] = await pool.query(`
+            SELECT 
+                cuentas.id_cuenta, 
+                cuentas.servicio, 
+                cuentas.cbu, 
+                cuentas.date, 
+                empleados.id_empleado, 
+                empleados.nombre 
+            FROM cuentas 
+            INNER JOIN empleados ON cuentas.id_empleado = empleados.id_empleado;
+        `);
+        
+        res.json(rows);
+    } catch (error) {
+        console.error("Error al obtener cuentas con empleados:", error);
+        res.status(500).json({ message: "Error interno del servidor" });
+    }
+};
+
+
 export const crearCuenta = async (req, res) => {
     try {
         const { servicio, cbu, titular, id_empleado } = req.body;
-console.log("info",servicio,cbu,titular);
-        if (!servicio || !cbu || !titular) {
+
+        if (!servicio || !cbu || !titular || !id_empleado) {
             return res.status(400).json({ message: "Todos los campos son obligatorios" });
+        }
+
+        // Verificar si el empleado existe
+        const [empleado] = await pool.query("SELECT * FROM empleados WHERE id_empleado = ?", [id_empleado]);
+        if (empleado.length === 0) {
+            return res.status(404).json({ message: "Empleado no encontrado" });
         }
 
         // Obtener la fecha y hora actual
         const fechaActual = new Date().toISOString().slice(0, 19).replace("T", " ");
 
+        // Insertar la cuenta asociada al empleado
         const [result] = await pool.query(
             "INSERT INTO cuentas (servicio, titular, cbu, date, id_empleado) VALUES (?, ?, ?, ?, ?)",
             [servicio, titular, cbu, fechaActual, id_empleado]
         );
 
-        res.status(201).json({ 
-            message: "Cuenta creada exitosamente", 
+        res.status(201).json({
+            message: "Cuenta creada exitosamente y asociada al empleado",
             id_cuenta: result.insertId,
-            date: fechaActual
+            date: fechaActual,
+            id_empleado
         });
+
     } catch (error) {
         console.error("Error al crear cuenta:", error);
         res.status(500).json({ message: "Error interno del servidor" });
     }
 };
+
+
+
 export const obtenerCuentas = async (req, res) => {
     try {
         const [rows] = await pool.query("SELECT * FROM cuentas");

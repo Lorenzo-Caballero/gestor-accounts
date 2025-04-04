@@ -10,11 +10,9 @@ export const crearEmpleado = async (req, res) => {
             });
         }
 
-        // Crear el empleado
         const [empleadoResult] = await pool.query("INSERT INTO empleados (nombre) VALUES (?)", [nombre]);
         const id_empleado = empleadoResult.insertId;
 
-        // Crear la cuenta asociada
         const [cuentaResult] = await pool.query(
             "INSERT INTO cuentas (servicio, cbu, date, id_empleado) VALUES (?, ?, NOW(), ?)",
             [servicio, cbu, id_empleado]
@@ -52,13 +50,11 @@ export const agregarCuenta = async (req, res) => {
             });
         }
 
-        // Verificar si el empleado existe
         const [empleado] = await pool.query("SELECT * FROM empleados WHERE id_empleado = ?", [id_empleado]);
         if (empleado.length === 0) {
             return res.status(404).json({ message: "Empleado no encontrado" });
         }
 
-        // Insertar la nueva cuenta
         const [cuentaResult] = await pool.query(
             "INSERT INTO cuentas (servicio, cbu, date, id_empleado) VALUES (?, ?, NOW(), ?)",
             [servicio, cbu, id_empleado]
@@ -91,7 +87,6 @@ export const obtenerCBU = async (req, res) => {
             return res.status(400).json({ error: "Se requiere el ID del empleado" });
         }
 
-        // Obtener las cuentas asociadas al empleado
         const [cuentas] = await pool.query(
             "SELECT servicio, cbu FROM cuentas WHERE id_empleado = ?",
             [id_empleado]
@@ -101,7 +96,6 @@ export const obtenerCBU = async (req, res) => {
             return res.status(404).json({ error: "No hay cuentas registradas para este empleado" });
         }
 
-        // Devolver la primera cuenta disponible (puedes modificar la lógica para rotar cuentas)
         const cuenta = cuentas[0];
 
         res.json({
@@ -117,16 +111,15 @@ export const obtenerCBU = async (req, res) => {
         });
     }
 };
+
 export const obtenerEmpleados = async (req, res) => {
     try {
-        // Obtener todos los empleados
         const [empleados] = await pool.query("SELECT * FROM empleados");
 
         if (empleados.length === 0) {
             return res.status(404).json({ message: "No hay empleados registrados" });
         }
 
-        // Obtener las cuentas de cada empleado
         const empleadosConCuentas = await Promise.all(
             empleados.map(async (empleado) => {
                 const [cuentas] = await pool.query(
@@ -149,5 +142,43 @@ export const obtenerEmpleados = async (req, res) => {
             message: "Error interno del servidor al obtener empleados",
             error: error.message
         });
+    }
+};
+
+export const actualizarEmpleado = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nombre } = req.body;
+
+        const [result] = await pool.query(
+            "UPDATE empleados SET nombre = ? WHERE id_empleado = ?",
+            [nombre, id]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Empleado no encontrado" });
+        }
+
+        res.json({ message: "Empleado actualizado correctamente" });
+    } catch (error) {
+        console.error("Error al actualizar empleado:", error);
+        res.status(500).json({ message: "Error interno del servidor", error: error.message });
+    }
+};
+
+export const eliminarEmpleado = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const [result] = await pool.query("DELETE FROM empleados WHERE id_empleado = ?", [id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Empleado no encontrado" });
+        }
+
+        res.json({ message: "Empleado eliminado correctamente" });
+    } catch (error) {
+        console.error("Error al eliminar empleado:", error);
+        res.status(500).json({ message: "Error interno del servidor", error: error.message });
     }
 };

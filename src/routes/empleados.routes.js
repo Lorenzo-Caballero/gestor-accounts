@@ -1,10 +1,23 @@
 import { Router } from "express";
-import { agregarCuenta, obtenerCBU ,obtenerEmpleados} from "../controllers/empleados.controllers.js";
+import {
+  agregarCuenta,
+  obtenerCBU,
+  obtenerEmpleados,
+  crearEmpleado,
+  actualizarEmpleado,
+  eliminarEmpleado
+} from "../controllers/empleados.controllers.js";
 
 const router = Router();
 
-router.post('/agregar-cuenta', agregarCuenta);
-router.get('/obtener-cbu', obtenerCBU);
-router.get('/obtener-empleados', obtenerEmpleados);
+// CRUD de empleados
+router.post('/empleados', crearEmpleado);             // Crear empleado
+router.get('/obtener-empleados', obtenerEmpleados);   // Leer empleados con cuentas
+router.put('/empleados/:id', actualizarEmpleado);     // Actualizar empleado
+router.delete('/empleados/:id', eliminarEmpleado);    // Eliminar empleado
+
+// Cuentas
+router.post('/agregar-cuenta', agregarCuenta);        // Agregar cuenta
+router.get('/obtener-cbu', obtenerCBU);               // Obtener CBU de empleado
 
 export default router;

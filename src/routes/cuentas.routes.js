@@ -4,16 +4,20 @@ import {
     obtenerCuentas, 
     obtenerCuentaPorId, 
     actualizarCuenta, 
-    eliminarCuenta 
-} from "../controllers/cuentas.controller.js"
+    eliminarCuenta,
+    obtenerCuentasConEmpleados
+} from "../controllers/cuentas.controller.js";
 
 const router = Router();
 
 // Rutas para CRUD de cuentas
-router.post("/cuentas", crearCuenta);
-router.get("/cuentas", obtenerCuentas);
-router.get("/cuentas/:id", obtenerCuentaPorId);
-router.put("/cuentas/:id", actualizarCuenta);
-router.delete("/cuentas/:id", eliminarCuenta);
+router.post("/cuentas", crearCuenta);                    // Crear cuenta
+router.get("/cuentas", obtenerCuentas);                  // Obtener todas las cuentas
+router.get("/cuentas/:id", obtenerCuentaPorId);          // Obtener una cuenta por ID
+router.put("/cuentas/:id", actualizarCuenta);            // Actualizar una cuenta
+router.delete("/cuentas/:id", eliminarCuenta);           // Eliminar una cuenta
+
+// Cuentas + Empleados
+router.get("/cuentas-empleados", obtenerCuentasConEmpleados); // Obtener cuentas con info del empleado
 
 export default router;
