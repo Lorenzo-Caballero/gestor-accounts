@@ -123,7 +123,21 @@ export const obtenerCuentaPorId = async (req, res) => {
         res.status(500).json({ message: "Error interno del servidor" });
     }
 };
-
+export const obtenerCuentasConNombreEmpleado = async (req, res) => {
+    try {
+      const [result] = await pool.query(`
+        SELECT cuentas.id AS id_cuenta, cuentas.servicio, cuentas.cbu, cuentas.titular,
+               empleados.nombre AS nombre_empleado
+        FROM cuentas
+        JOIN empleados ON cuentas.id_empleado = empleados.id
+      `);
+      res.json(result);
+    } catch (error) {
+      console.error("Error al obtener cuentas con nombre de empleado:", error);
+      res.status(500).json({ message: "Error interno del servidor" });
+    }
+  };
+  
 // Actualizar una cuenta
 export const actualizarCuenta = async (req, res) => {
     const { id } = req.params;
