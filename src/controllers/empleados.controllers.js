@@ -151,7 +151,7 @@ export const actualizarEmpleado = async (req, res) => {
         const { nombre } = req.body;
 
         const [result] = await pool.query(
-            "UPDATE empleados SET nombre = ? WHERE id_empleado = ?",
+            "UPDATE empleados SET nombre = ? WHERE id = ?",
             [nombre, id]
         );
 
