@@ -125,26 +125,26 @@ export const obtenerCuentaPorId = async (req, res) => {
 };
 
 // Actualizar una cuenta
-export const actualizarCuenta = async (req, res) => {
+const actualizarCuenta = async (req, res) => {
+    const { id } = req.params;
+    const { servicio, cbu, titular, id_empleado } = req.body;
+  
     try {
-        const { id } = req.params;
-        const { servicio, cbu, id_empleado } = req.body;
-
-        const [result] = await pool.query(
-            "UPDATE cuentas SET servicio = ?, cbu = ?, id = ? WHERE id = ?",
-            [servicio, cbu, id_empleado, id]
-        );
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: "Cuenta no encontrada" });
-        }
-
-        res.json({ message: "Cuenta actualizada correctamente" });
+      const [result] = await pool.query(
+        "UPDATE cuentas SET servicio = ?, cbu = ?, titular = ?, id_empleado = ? WHERE id = ?",
+        [servicio, cbu, titular, id_empleado, id]
+      );
+  
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "Cuenta no encontrada" });
+      }
+  
+      res.status(200).json({ message: "Cuenta actualizada con éxito" });
     } catch (error) {
-        console.error("Error al actualizar cuenta:", error);
-        res.status(500).json({ message: "Error interno del servidor" });
+      console.error("Error actualizando cuenta:", error);
+      res.status(500).json({ message: "Error del servidor" });
     }
-};
+  };
 
 // Eliminar una cuenta
 export const eliminarCuenta = async (req, res) => {
