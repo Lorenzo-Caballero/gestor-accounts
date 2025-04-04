@@ -2,7 +2,7 @@ import { pool } from "../db.js";
 
 export const crearEmpleado = async (req, res) => {
     try {
-        const { nombre, servicio, cbu } = req.body;
+        const { nombre} = req.body;
 
         if (!nombre) {
             return res.status(400).json({
@@ -170,7 +170,7 @@ export const eliminarEmpleado = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const [result] = await pool.query("DELETE FROM empleados WHERE id_empleado = ?", [id]);
+        const [result] = await pool.query("DELETE FROM empleados WHERE id= ?", [id]);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: "Empleado no encontrado" });
