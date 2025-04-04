@@ -5,12 +5,14 @@ import {
   obtenerEmpleados,
   crearEmpleado,
   actualizarEmpleado,
+  obtenerEmpleadosConCuentasSimple,
   eliminarEmpleado
 } from "../controllers/empleados.controllers.js";
 
 const router = Router();
 
 // CRUD de empleados
+router.get('/empleados-cuentas', obtenerEmpleadosConCuentasSimple);
 router.post('/empleados', crearEmpleado);             // Crear empleado
 router.get('/obtener-empleados', obtenerEmpleados);   // Leer empleados con cuentas
 router.put('/empleados/:id', actualizarEmpleado);     // Actualizar empleado

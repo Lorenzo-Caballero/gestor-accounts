@@ -111,6 +111,28 @@ export const obtenerCBU = async (req, res) => {
         });
     }
 };
+export const obtenerEmpleadosConCuentasSimple = async (req, res) => {
+    try {
+        const [rows] = await pool.query(`
+            SELECT 
+                e.id_empleado, 
+                e.nombre, 
+                c.id_cuenta, 
+                c.servicio 
+            FROM empleados e
+            LEFT JOIN cuentas c ON e.id_empleado = c.id_empleado
+        `);
+
+        res.json(rows);
+    } catch (error) {
+        console.error("Error al obtener empleados con cuentas:", error);
+        res.status(500).json({ 
+            message: "Error interno del servidor al obtener empleados con cuentas", 
+            error: error.message 
+        });
+    }
+};
+
 
 export const obtenerEmpleados = async (req, res) => {
     try {
