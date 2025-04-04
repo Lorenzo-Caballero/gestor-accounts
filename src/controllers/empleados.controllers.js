@@ -117,7 +117,7 @@ export const obtenerEmpleadosConCuentasSimple = async (req, res) => {
             SELECT 
                 e.id, 
                 e.nombre, 
-                c.id_cuenta, 
+                c.id, 
                 c.servicio 
             FROM empleados e
             LEFT JOIN cuentas c ON e.id = c.id_empleado
