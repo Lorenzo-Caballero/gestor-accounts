@@ -61,7 +61,7 @@ export const crearCuenta = async (req, res) => {
         }
 
         // Verificar si el empleado existe
-        const [empleado] = await pool.query("SELECT * FROM empleados WHERE id_empleado = ?", [id_empleado]);
+        const [empleado] = await pool.query("SELECT * FROM empleados WHERE id = ?", [id_empleado]);
         if (empleado.length === 0) {
             return res.status(404).json({ message: "Empleado no encontrado" });
         }
@@ -79,7 +79,7 @@ export const crearCuenta = async (req, res) => {
 
         // Actualizar el id_cuenta en la tabla empleados
         await pool.query(
-            "UPDATE empleados SET id_cuenta = ? WHERE id_empleado = ?",
+            "UPDATE empleados SET id_cuenta = ? WHERE id = ?",
             [idCuentaNueva, id_empleado]
         );
 
