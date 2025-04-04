@@ -125,7 +125,7 @@ export const obtenerCuentaPorId = async (req, res) => {
 };
 
 // Actualizar una cuenta
-const actualizarCuenta = async (req, res) => {
+export const actualizarCuenta = async (req, res) => {
     const { id } = req.params;
     const { servicio, cbu, titular, id_empleado } = req.body;
   
