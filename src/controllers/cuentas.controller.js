@@ -131,7 +131,7 @@ export const actualizarCuenta = async (req, res) => {
         const { servicio, cbu, id_empleado } = req.body;
 
         const [result] = await pool.query(
-            "UPDATE cuentas SET servicio = ?, cbu = ?, id = ? WHERE id_cuenta = ?",
+            "UPDATE cuentas SET servicio = ?, cbu = ?, id = ? WHERE id = ?",
             [servicio, cbu, id_empleado, id]
         );
 
