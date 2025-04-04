@@ -4,7 +4,7 @@ export const crearEmpleado = async (req, res) => {
     try {
         const { nombre, servicio, cbu } = req.body;
 
-        if (!nombre || !servicio || !cbu) {
+        if (!nombre) {
             return res.status(400).json({
                 message: "Todos los campos (nombre, servicio, cbu) son obligatorios"
             });
