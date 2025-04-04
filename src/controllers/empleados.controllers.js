@@ -41,7 +41,7 @@ export const agregarCuenta = async (req, res) => {
         }
 
         // Verificar que el empleado existe
-        const [empleado] = await pool.query("SELECT * FROM empleados WHERE id_empleado = ?", [id_empleado]);
+        const [empleado] = await pool.query("SELECT * FROM empleados WHERE id = ?", [id_empleado]);
         if (empleado.length === 0) {
             return res.status(404).json({ message: "Empleado no encontrado" });
         }
