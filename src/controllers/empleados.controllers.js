@@ -115,12 +115,12 @@ export const obtenerEmpleadosConCuentasSimple = async (req, res) => {
     try {
         const [rows] = await pool.query(`
             SELECT 
-                e.id_empleado, 
+                e.id, 
                 e.nombre, 
                 c.id_cuenta, 
                 c.servicio 
             FROM empleados e
-            LEFT JOIN cuentas c ON e.id_empleado = c.id_empleado
+            LEFT JOIN cuentas c ON e.id = c.id_empleado
         `);
 
         res.json(rows);
