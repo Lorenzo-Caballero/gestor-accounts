@@ -150,7 +150,7 @@ export const actualizarCuenta = async (req, res) => {
 export const eliminarCuenta = async (req, res) => {
     try {
         const { id } = req.params;
-        const [result] = await pool.query("DELETE FROM cuentas WHERE id_cuenta = ?", [id]);
+        const [result] = await pool.query("DELETE FROM cuentas WHERE id= ?", [id]);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: "Cuenta no encontrada" });
