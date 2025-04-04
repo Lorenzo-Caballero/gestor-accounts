@@ -61,7 +61,7 @@ export const crearCuenta = async (req, res) => {
         }
 
         // Verificar si el empleado existe
-        const [empleado] = await pool.query("SELECT * FROM empleados WHERE id= ?", [id_empleado]);
+        const [empleado] = await pool.query("SELECT * FROM empleados WHERE id_empleado = ?", [id_empleado]);
         if (empleado.length === 0) {
             return res.status(404).json({ message: "Empleado no encontrado" });
         }
@@ -75,19 +75,26 @@ export const crearCuenta = async (req, res) => {
             [servicio, titular, cbu, fechaActual, id_empleado]
         );
 
+        const idCuentaNueva = result.insertId;
+
+        // Actualizar el id_cuenta en la tabla empleados
+        await pool.query(
+            "UPDATE empleados SET id_cuenta = ? WHERE id_empleado = ?",
+            [idCuentaNueva, id_empleado]
+        );
+
         res.status(201).json({
             message: "Cuenta creada exitosamente y asociada al empleado",
-            id_cuenta: result.insertId,
+            id_cuenta: idCuentaNueva,
             date: fechaActual,
             id_empleado
         });
 
     } catch (error) {
         console.error("Error al crear cuenta:", error);
-        res.status(500).json({ message: "Error interno del servidor" });
+        res.status(500).json({ message: "Error interno del servidor", error: error.message });
     }
 };
-
 
 
 export const obtenerCuentas = async (req, res) => {
