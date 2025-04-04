@@ -145,9 +145,10 @@ export const actualizarCuenta = async (req, res) => {
   
     try {
       const [result] = await pool.query(
-        "UPDATE cuentas SET servicio = ?, cbu = ?, titular = ?, id_empleado = ? WHERE id = ?",
+        "UPDATE cuentas SET servicio = ?, cbu = ?, titular = ?, id_empleado = ? WHERE id_cuenta = ?",
         [servicio, cbu, titular, id_empleado, id]
       );
+      
   
       if (result.affectedRows === 0) {
         return res.status(404).json({ message: "Cuenta no encontrada" });
